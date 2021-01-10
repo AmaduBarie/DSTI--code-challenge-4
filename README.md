@@ -11,5 +11,5 @@ npm install
 
 npm start
 
-this is a full working of the project
+this is a full working verson of the project
 https://amadubarie-dsti-code-challenge-4.zeet.app/
