@@ -10,3 +10,6 @@ clone or fuck or pull it from this repo and run
 npm install
 
 npm start
+
+this is a full working of the project
+https://amadubarie-dsti-code-challenge-4.zeet.app/
