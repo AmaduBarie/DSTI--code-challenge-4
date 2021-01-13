@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .position{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    border: 2px solid green;
+    border-radius: 4px;
+    width: fit-content;
+    padding: 4px;
+    margin-top: 1em;
+    max-height: 5em;
+}
+ 
+.position div input{
+    position: relative;
+     width: 100%;
+     margin: 0px 0px 5px 2px;
+     border: 2px solid gray;
+     border-radius: 4px;
+     z-index: 20;
+}
+.position div{
+    
+    display: flex;
+    justify-content: flex-start;
+}
+.position div div{
+    
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+
+}
+.position div span{ 
+    color: rgba(255, 255, 255, 0.884);
+    font-weight: bold;
+    margin-right: .5em;
+}.position a:nth-child(1) { 
+    color: rgb(231, 231, 231);
+    font-weight: bold;
+    background-color:rgba(252, 6, 6, 0.884);
+    width: fit-content;
+    border: 0px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: .2em;
+     padding: .3em;
+     text-align: center;
+     height: 1em;
+
+    /* margin-right: .5em; */
+}.position a:nth-child(2) { 
+    color: rgb(231, 231, 231);
+    font-weight: bold;
+    background-color:rgba(10, 6, 252, 0.767);
+    width: 3em;
+    text-decoration: none;
+    text-align: center;
+    border: 0px;
+    margin-left: .2em;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: .2em;
+    padding: .3em;
+     text-align: center;
+     height: 1em;
+     position: relative;
+     z-index: 10;
+} 
+        .parpopup{
+    position: absolute;
+    background-color: rgba(34, 34, 34, 0.911);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%; 
+    left: 0px;
+    color: white;
+    top:0px    
+}    .parpopup span{
+    color: gray;  
+    /* margin-top: -1em; */
+} img {
+     width: 5em;
+    height: 4em;  
+    position: relative;
+    margin-top: -.9em;
+    z-index: 0;
+    margin-left: -1.8em;
+    display: none;
+
+}
+    </style>
+</head>
+<body>
+    <div class="parpopup">    
+            <h4>Edit Station</h4>
+            <span>T o the the Latitude and Longitude go to the map and drag the marker</span>
+               <div class="position"> 
+                   <div>
+                       
+                       <span id="cap">Type:</span> <input onfocus="this.select()" value=<%= obj.type %> list="browsers" name="type" id="browser">
+                       <datalist id="browsers">    
+                           <option value='Dam'> 
+                           <option value='Well'> 
+                           <option value='Pump Station'>
+                           <option value='Community Pump'>
+                       </datalist> 
+                   </div>
+                   <div><span id="cap">Capacity:</span>  
+                        <input value=<%= obj.capacity %> onfocus="this.select()"  min='1'  name="capacity" type="number">
+                        <input value=<%= obj._id %> hidden name="id" type="text">
+                       
+                   </div> 
+                   <div>
+                       <div>
+                       <a onclick="displayoff()">cancel</a> 
+                       <a onclick="savestation()">save</a> 
+                       <img src="loading.gif" alt="">
+                </div>  
+                   </div>        
+               </div>
+           <!-- </div> -->
+       </div>
+
+       <script>
+           function savestation(){
+            let empty = true
+            let editedobj = {}
+            let val = document.querySelectorAll('.position div input')
+            for (let dx = 0; dx < val.length; dx++) {
+                console.log(val[dx].value)
+                if(val[dx].value==''){
+                    val[dx].style.borderColor ='red' 
+                    empty = false
+                }else{
+                    editedobj[val[dx].name] = val[dx].value
+                    val[dx].style.borderColor ='gray'
+                }
+            }
+
+            if(empty){
+            document.querySelector('img').style.display='block' 
+            fetch('/saveedit',{
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editedobj),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data==='success'){
+                        setTimeout(() => {                        
+                        window.location.href = "/";
+                        }, 1000);        
+                    }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+            }
+           }
+       </script>
+</body>
+</html>
