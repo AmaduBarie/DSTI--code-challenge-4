@@ -6,49 +6,42 @@
     <title>Dsti code challenge</title>
     <link rel="stylesheet" href="_edit.min.css">
     <link rel="icon" type="image/png" href="icon.png" />
-    <meta
-      name="description"
-      content="Web site created by ALhaji Masie"
-    /> 
-   
+    <meta name="description" content="Web site created by ALhaji Masie" />
 </head>
 <body>
-    <div class="parpopup">    
-            <h4>Edit Station</h4>
-            <span>T o the the Latitude and Longitude go to the map and drag the marker</span>
-            <div id="nameandcap" >
-                      <span id="cap">Type:</span> <%= obj.type %> <br>
-                    <span id="cap">Capacity:</span> <%= obj.capacity %> 
-                   </div>
-               <div class="position"> 
-                   
-                   <div>
-                       
-                       <span id="cap">Type:</span> <input onfocus="this.select()" list="browsers" name="type" id="browser">
-                       <datalist id="browsers">    
-                           <option value='Dam'> 
-                           <option value='Well'> 
-                           <option value='Pump Station'>
-                           <option value='Community Pump'>
-                       </datalist> 
-                   </div>
-                   <div><span id="cap">Capacity:</span>  
-                        <input onfocus="this.select()"  min='1'  name="capacity" type="number">
-                        <input name='id' value=<%= obj._id %> hidden name="id" type="text">
-                       
-                   </div> 
-                   <div>
-                       <div>
-                       <a href="/">cancel</a> 
-                       <a onclick="savestation()">save</a> 
-                       <img src="loading.gif" alt="">
-                </div>  
-                   </div>        
-               </div>
-           <!-- </div> -->
-       </div>
-
-       <script src="minn.js"></script>
- 
+    <div class="parpopup">
+        <h4>Edit Station</h4>
+        <span>T o the the Latitude and Longitude go to the map and drag the marker</span>
+        <div id="nameandcap">
+            <span id="cap">Type:</span>
+            <%= obj.type %> <br>
+                <span id="cap">Capacity:</span>
+                <%= obj.capacity %>
+        </div>
+        <div class="position">
+            <div>
+                <span id="cap">Type:</span> <input onfocus="this.select()" list="browsers" name="type" id="browser">
+                <datalist id="browsers">
+                    <option value='Dam'>
+                    <option value='Well'>
+                    <option value='Pump Station'>
+                    <option value='Community Pump'>
+                </datalist>
+            </div>
+            <div><span id="cap">Capacity:</span>
+                <input onfocus="this.select()" min='1' name="capacity" type="number">
+                <input name='id' value=<%=obj._id %> hidden name="id" type="text">
+            </div>
+            <div>
+                <div>
+                    <a href="/">cancel</a>
+                    <a onclick="savestation()">save</a>
+                    <img src="loading.gif" alt="">
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+    <script src="minn.js"></script>
 </body>
 </html>

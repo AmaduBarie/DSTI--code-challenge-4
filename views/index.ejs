@@ -1,34 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dsti code challenge</title>
-
     <link rel="icon" type="image/png" href="icon.png" />
-    <meta
-      name="description"
-      content="Web site created by ALhaji Masie"
-    /> 
-
-
-
-
-
-
+    <meta name="description" content="Web site created by ALhaji Masie" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
         crossorigin="" />
-
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
     <link rel="stylesheet" href="_min.css">
 </head>
-
 <body>
-
     <!-- <div id="mm"></div> -->
     <div class="parpopup">
         <div class="popup">
@@ -45,7 +31,6 @@
                 </div>
                 <div><span id="cap">Capacity:</span>
                     <input name="capacity" type="number" min="1" onfocus="this.select()">
-
                 </div>
                 <div>
                     <div class="groupimg">
@@ -57,7 +42,6 @@
             </div>
         </div>
     </div>
-
     <div class="updatestation">
         <div>
             <h4>Update Station Location</h4>
@@ -66,22 +50,14 @@
             <div>
                 <button onclick="dragPositionno()">no</button>
                 <button onclick="dragPositionyes()">yes</button>
-
             </div>
-
         </div>
     </div>
-
-
     <div id="mapid"></div>
     <div id="legend">
         <div class="dropdown">
         </div>
     </div>
-
-
     <script src="min.js"></script>
-    
 </body>
-
 </html>
