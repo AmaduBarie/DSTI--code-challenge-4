@@ -23,10 +23,8 @@ function savestation() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data === 'success') {
-                    setTimeout(() => {
-                        window.location.assign('/');
-                    }, 1000);
+                if (data === 'success') { 
+                        window.location.assign('/');                   
                 }
             })
             .catch((error) => {
