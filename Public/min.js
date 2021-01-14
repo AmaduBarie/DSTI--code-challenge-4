@@ -6,8 +6,7 @@ var list = []
 var moveMarker = { location: '', from: 'move' }
 // fileter function 
 function waterstation() {
-    let arr = `<span  class="dropbtn"> <img src="${category[0]}.png" />${category[0]}</span>
-                        <div class="dropdown-content">`
+    let arr = `<span  class="dropbtn"> <img src="${category[0]}.png" />${category[0]}</span><div class="dropdown-content">`
     arr += category.map((e, o) => o !== 0 ? (`<span key='${o}' onclick="view(${o})" class="dropbtn"><img src="${e}.png" alt=""> ${e}</span>`) : '')
     arr += ` </div>`
     arr = arr.replaceAll(',', '')
@@ -50,7 +49,6 @@ function markerPositioner(val, pos) {
                     </div>        
                 </div>`);
     k.id = val._id
-    k.pos = pos
     k.on('dragend', function (event) {
         flip('.updatestation', 'flex')
         moveMarker.location = { ...event.target._latlng }
@@ -62,7 +60,7 @@ function markerPositioner(val, pos) {
 }
 
 // change fileter
-async function view(e) {
+function view(e) {
     const pos = category[e * 1]
     for (let l = (e * 1); l < category.length; l++) {
         if (category[l + 1]) {
@@ -70,20 +68,13 @@ async function view(e) {
         }
     }
     category.length = category.length - 1
-    category = [pos, ...category]
+    category = [pos,...category]
     waterstation()
+    mymap.eachLayer(l=>l.id &&  mymap.removeLayer(l))
     if (list.length) {
         for (let markerpoint = 0; markerpoint < list.length; markerpoint++) {
-            if (list[markerpoint].type === pos) {
-                await mymap.removeLayer(list[markerpoint].marker);
-                await markerPositioner(list[markerpoint], markerpoint)
-            } else if (pos === 'All') {
-                await mymap.removeLayer(list[markerpoint].marker);
-                await markerPositioner(list[markerpoint], markerpoint)
-            } else {
-                await mymap.removeLayer(list[markerpoint].marker);
-            }
-        }
+             (list[markerpoint].type === pos || pos === 'All') && markerPositioner(list[markerpoint], markerpoint)
+        }        
     }
 }
 //   open filters  
@@ -98,7 +89,7 @@ function displayoff() {
 
 // save drap position
 function dragPositionyes() {
-    flip('.updatestation div img', 'block')
+    flip('.updatestation div img', 'block')    
     fetch('/saveedit', {
         method: 'POST',
         headers: {
@@ -109,16 +100,16 @@ function dragPositionyes() {
         .then(response => response.json())
         .then(data => {
             if (data !== 'err') {
-                setTimeout(() => {
+               
                     flip('.updatestation div img', 'none')
                     flip('h3', 'block')
-                }, 1000);
+                
                 list[moveMarker.pos] = data
                 setTimeout(() => {
                     flip('.updatestation', 'none')
                     flip('h3', 'none')
                     moveMarker = {}
-                }, 2000);
+                }, 1000);
             }
         })
         .catch((error) => {
@@ -137,9 +128,10 @@ function dragPositionno() {
 function savestation() {
     savedobj.type = document.querySelector('.position div:nth-child(1) input').value
     savedobj.capacity = document.querySelector('.position div:nth-child(2) input').value
+    if(category.indexOf(savedobj.type)!==-1 && savedobj.type !=='All'){
     if (savedobj.type !== '' && savedobj.capacity !== "") {
         // showing progress image
-        flip('.groupimg img', 'block')
+        flip('.groupimg img','block')
         fetch('/add', {
             method: 'POST', // or 'PUT'
             headers: {
@@ -150,14 +142,14 @@ function savestation() {
             .then(response => response.json())
             .then(data => {
                 if (data !== 'err') {
-                    setTimeout(() => {
+                    
                         flip('.groupimg img', 'none')
                         flip('.parpopup', 'none')
                         document.querySelector('.position div:nth-child(1) input').value = ''
                         document.querySelector('.position div:nth-child(2) input').value = ''
                         markerPositioner(data, list.length)
                         list.push(data)
-                    }, 1000);
+                    
                     savedobj = {}
                 }
             })
@@ -174,7 +166,7 @@ function savestation() {
         flip('.position div:nth-child(1) input', '2px solid gray')
     }
 }
-
+}
 function deleter(e) {
     flip('.deleter img', 'block')
     fetch('/deleter', {
@@ -187,12 +179,11 @@ function deleter(e) {
         .then(response => response.json())
         .then(data => {
             if (data !== 'err') {
-                setTimeout(() => {
                     list = list.filter(v => {
-                        v._id === e && mymap.removeLayer(v.marker);
-                        return v._id !== e
+                        v._id === data && mymap.removeLayer(v.marker);
+                        return v._id !== data
                     })
-                }, 1000);
+                
             }
         })
         .catch((error) => {

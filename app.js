@@ -73,7 +73,7 @@ app.post('/add', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   station.findOneAndDelete({ _id: req.body.id }, (err, data) => {
     if (data) {
-      res.status(200).end(JSON.stringify(`success`))
+      res.status(200).end(JSON.stringify(data._id))
     } else {
       res.status(200).end(JSON.stringify(`err`))
     }
