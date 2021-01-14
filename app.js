@@ -25,7 +25,7 @@ app.use(bodyParser.json())
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //setup public folder
-app.use(express.static('./images'));
+app.use(express.static('./Public'));
 app.get('/',function (req, res) {    
 res.render('index.ejs')
 });
