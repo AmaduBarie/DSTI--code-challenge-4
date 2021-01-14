@@ -3,114 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .position{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    border: 2px solid green;
-    border-radius: 4px;
-    width: fit-content;
-    padding: 4px;
-    margin-top: 1em;
-    max-height: 5em;
-}
- 
-.position div input{
-    position: relative;
-     width: 100%;
-     margin: 0px 0px 5px 2px;
-     border: 2px solid gray;
-     border-radius: 4px;
-     z-index: 20;
-}
-.position div{
-    
-    display: flex;
-    justify-content: flex-start;
-}
-.position div div{
-    
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-
-}
-.position div span{ 
-    color: rgba(255, 255, 255, 0.884);
-    font-weight: bold;
-    margin-right: .5em;
-}.position a:nth-child(1) { 
-    color: rgb(231, 231, 231);
-    font-weight: bold;
-    background-color:rgba(252, 6, 6, 0.884);
-    width: fit-content;
-    border: 0px;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-top: .2em;
-     padding: .3em;
-     text-align: center;
-     height: 1em;
-
-    /* margin-right: .5em; */
-}.position a:nth-child(2) { 
-    color: rgb(231, 231, 231);
-    font-weight: bold;
-    background-color:rgba(10, 6, 252, 0.767);
-    width: 3em;
-    text-decoration: none;
-    text-align: center;
-    border: 0px;
-    margin-left: .2em;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-top: .2em;
-    padding: .3em;
-     text-align: center;
-     height: 1em;
-     position: relative;
-     z-index: 10;
-} 
-        .parpopup{
-    position: absolute;
-    background-color: rgba(34, 34, 34, 0.911);
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%; 
-    left: 0px;
-    color: white;
-    top:0px    
-}    .parpopup span{
-    color: gray;  
-    /* margin-top: -1em; */
-} img {
-     width: 5em;
-    height: 4em;  
-    position: relative;
-    margin-top: -.9em;
-    z-index: 0;
-    margin-left: -1.8em;
-    display: none;
-
-}
-    </style>
+    <title>Dsti code challenge</title>
+    <link rel="stylesheet" href="_edit.min.css">
+   
 </head>
 <body>
     <div class="parpopup">    
             <h4>Edit Station</h4>
             <span>T o the the Latitude and Longitude go to the map and drag the marker</span>
+            <div id="nameandcap" >
+                      <span id="cap">Type:</span> <%= obj.type %> <br>
+                    <span id="cap">Capacity:</span> <%= obj.capacity %> 
+                   </div>
                <div class="position"> 
+                   
                    <div>
                        
-                       <span id="cap">Type:</span> <input onfocus="this.select()" value=<%= obj.type %> list="browsers" name="type" id="browser">
+                       <span id="cap">Type:</span> <input onfocus="this.select()" list="browsers" name="type" id="browser">
                        <datalist id="browsers">    
                            <option value='Dam'> 
                            <option value='Well'> 
@@ -119,8 +28,8 @@
                        </datalist> 
                    </div>
                    <div><span id="cap">Capacity:</span>  
-                        <input value=<%= obj.capacity %> onfocus="this.select()"  min='1'  name="capacity" type="number">
-                        <input value=<%= obj._id %> hidden name="id" type="text">
+                        <input onfocus="this.select()"  min='1'  name="capacity" type="number">
+                        <input name='id' value=<%= obj._id %> hidden name="id" type="text">
                        
                    </div> 
                    <div>
@@ -134,7 +43,9 @@
            <!-- </div> -->
        </div>
 
-       <script>
+       <script src="edit.js"></script>
+
+       <!-- <script>
            function savestation(){
             let empty = true
             let editedobj = {}
@@ -172,6 +83,6 @@
                 });
             }
            }
-       </script>
+       </script> -->
 </body>
 </html>

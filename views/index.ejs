@@ -1,561 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dsti code challenge</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
-
-    <style>
-        #mapid {widows: 100%; height: 100vh;min-height: 700px;   min-width: 700px;position: relative;z-index: 0; }
-        #legend { height: 10vh;width: fit-content;position: absolute;top:60vh}
-     
-
-.dropdown {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  max-width: 10em;
-  justify-content: center;
-  align-items: flex-start;
-}
-
- .dropdown:nth-child(1) {
-border-top-left-radius: 5px;
-border-top-right-radius: 5px;
-border-radius: 5em;
-}
-
-.dropdown-content {
-  display: none;
-  position: relative;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  height: 4em;
-}
-
-.dropdown-content span {
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  background-color:#ff6600;
-}
-
-.dropdown-content span:hover {background-color: blue}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-  
-}
-
-.dropdown:hover .dropbtn {
-  background-color:#ff6600;
-  margin: 0px;
-}
-
-
-.dropdown:hover .dropbtn:hover {
-    background-color: blue;
-    margin: 0px !important;
-}
- .dropdown:hover .dropbtn img {
-     width: 1em;
-    height: 1em; 
-    margin-right: 5px;
-}
-.dropbtn img {
-     width: 1em;
-    height: 1em;  
-    margin-right: 5px;
-
-}
-.dropbtn {
-  background-color: #4c6baf;
-  color: white;
-  padding: 16px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin: 0px;
-}
-
-.position{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    border: 2px solid green;
-    border-radius: 4px;
-    width: fit-content;
-    padding: 4px;  
-}
-.position div{
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    color: rgba(0, 0, 0, 0.575);
-    font-weight: lighter; 
-}
-.position div input{
-    position: relative;
-     width: 100%;
-     margin: 0px 0px 5px 2px;
-     border: 2px solid gray;
-     border-radius: 4px; 
-
-}
-.position div{
-    
-    display: flex;
-    justify-content: flex-start; 
-
-}
-.position div div{
-    
-    display: flex;
-    justify-content: flex-end;
-    width: 100%; 
-
-}.position div #cap{ 
-    color: rgba(255, 255, 255, 0.884) !important;
-    font-weight: bold;
-    margin-right: .5em; 
-
-}
-.position div span{ 
-    color: rgba(0, 0, 0, 0.884);
-    font-weight: bold;
-    margin-right: .5em; 
-
-}.position button { 
-    color: rgb(231, 231, 231);
-    font-weight: bold;
-    background-color:rgba(252, 6, 6, 0.884);
-    width: fit-content;
-    border: 0px;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-top: .2em;  
-
-    /* margin-right: .5em; */
-}.position a { 
-    color: rgb(231, 231, 231);
-    font-weight: bold;
-    background-color:rgba(10, 6, 252, 0.767);
-    width: 3em;
-    text-decoration: none;
-    text-align: center;
-    border: 0px;
-    margin-left: .2em;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-top: .2em; 
-
-    /* justify-self: flex-end;
-    align-self: flex-end; */
-}.position button:nth-child(2){ 
-    color: rgb(231, 231, 231);
-    font-weight: bold;
-    background-color:rgb(6, 22, 252);
-    width: fit-content;
-    border: 0px;
-    margin-left: .2em;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-top: .2em;
-    z-index: 99; 
-
-}.parpopup{
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.911);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-    left: 0px;
-    top:0px
-   
-    
-}
-.parpopup div{
-    
-    position: relative;
-
-   
-}
-.groupimg img {
-    width: 5em;
-    height: 3.5em;
-    margin-left: -1.8em;
-    margin-top: -.99em;
-    position: relative;
-    z-index: 0;
-    display: none; 
-}
-
-.popup h4{
-color: whitesmoke; 
-
-}
-
-.updatestation{
-    position: fixed;
-    background-color:inherit;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-    left: 0px;
-    top:0px; 
-    
-}.updatestation div{ 
-    background-color: rgba(112, 108, 108, 0.808);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: whitesmoke;
-    border-radius: .6em;
-    width: 30%;
-    height: 30%; 
-    left: 0px;
-    top:0px;
-}.updatestation div div button:nth-child(1) { 
-    color: rgb(231, 231, 231);
-    font-weight: bold;
-    background-color:rgba(252, 6, 6, 0.884);
-    min-width: 3em;
-    border: 0px;
-    border-radius: 3px;
-    cursor: pointer;
-    margin: .2em;
-     padding: .5em;
-     text-align: center;
-
-    /* margin-right: .5em; */
-}.updatestation div div button:nth-child(2) { 
-    color: rgb(231, 231, 231);
-    font-weight: bold;
-    background-color:rgba(10, 6, 252, 0.767);
-    min-width: 3em;
-    text-decoration: none;
-    text-align: center;
-    border: 0px;
-    margin-left: .2em;
-    border-radius: 3px;
-    cursor: pointer;
-    margin: .2em;
-    padding: .5em;
-     text-align: center;
-}
-.updatestation div div{ 
-    background-color:transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    flex-direction: row; 
-    width: 100%;
-    height: 30%;  
-} 
-    </style>
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <link rel="stylesheet" href="_min.css">
 </head>
+
 <body>
-    
+
     <!-- <div id="mm"></div> -->
-<div class="parpopup">
-    <div class="popup">
-        <h4>Add Station</h4>
-           <div class="position"> 
-               <div><span id="cap">Type:</span> <input list="browsers" onfocus="this.select()" name="type" id="browser">
-                   <datalist id="browsers">    
-                       <option value='Dam'> 
-                       <option value='Well'> 
-                       <option value='Pump Station'>
-                       <option value='Community Pump'>
-                   </datalist> 
-               </div>
-               <div><span id="cap">Capacity:</span>  
-                    <input name="capacity"  type="number" min="1" onfocus="this.select()">
-                   
-               </div> 
-               <div>
-                   <div class="groupimg">
-                   <button onclick="displayoff()">cancel</button> 
-                   <button onclick="savestation()">save</button> 
-                       <img src="loading.gif" alt="">
-               </div>  
-               </div>        
-           </div>
-       </div>
-</div>
+    <div class="parpopup">
+        <div class="popup">
+            <h4>Add Station</h4>
+            <div class="position">
+                <div><span id="cap">Type:</span> <input list="browsers" onfocus="this.select()" name="type"
+                        id="browser">
+                    <datalist id="browsers">
+                        <option value='Dam'>
+                        <option value='Well'>
+                        <option value='Pump Station'>
+                        <option value='Community Pump'>
+                    </datalist>
+                </div>
+                <div><span id="cap">Capacity:</span>
+                    <input name="capacity" type="number" min="1" onfocus="this.select()">
 
-<div class="updatestation">
-    <div  >
-        <h4>Update Station Location</h4>   
-        <div> 
-            <button onclick="updatestation()">no</button> 
-            <button onclick="savestation()">yes</button>    
+                </div>
+                <div>
+                    <div class="groupimg">
+                        <button onclick="displayoff()">cancel</button>
+                        <button onclick="savestation()">save</button>
+                        <img src="loading.gif" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        </div>       
-                    
-       </div>
-   </div>
-   
+    <div class="updatestation">
+        <div>
+            <h4>Update Station Location</h4>
+            <h3>Succesfully updated</h3>
+            <img src="loading.gif" alt="">
+            <div>
+                <button onclick="dragPositionno()">no</button>
+                <button onclick="dragPositionyes()">yes</button>
+
+            </div>
+
+        </div>
+    </div>
+
 
     <div id="mapid"></div>
     <div id="legend">
-          <div class="dropdown">               
-          </div>
+        <div class="dropdown">
+        </div>
     </div>
 
- 
 
-    <script>  
-    var category = ['All','Pump Station','Dam','Community Pump', 'Well']     
-    var editedobj = {}
-    var savedobj = {location:''}
-    var list = []
-
-    // fileter function 
-    function waterstation() {
-        let arr = `<span onclick="init()" class="dropbtn"> <img src="${category[0]}.png" />${category[0]}</span>
-                        <div class="dropdown-content">`
-        arr += category.map((e, o) => o !== 0 ? (`<span key='${o}' onclick="view(${o})" class="dropbtn"><img src="${e}.png" alt=""> ${e}</span>`) : '')
-
-        arr += ` </div>`
-        arr = arr.replaceAll(',', '')
-        document.querySelector('.dropdown').innerHTML = arr
-    }  
-    waterstation()
-
-
-
-
-// the first time the document is loaded
-document.addEventListener("DOMContentLoaded", ()=>{
-    fetch('/init').then(response => response.json())
-.then(data => {
- list = data;
- if(list.length){
-     for (let markerpoint = 0; markerpoint < list.length; markerpoint++) {
-     
-    let gIcon = L.icon({
-                iconUrl: `${list[markerpoint].type}.png`, 
-                iconSize:     [17, 17], // size of the icon 
-          
-            });
-          
-              let k =   L.marker([list[markerpoint].location.lat,list[markerpoint].location.lng],{draggable:true,title:savedobj.type,icon:gIcon}).addTo(mymap);
-                 k.bindPopup( `<div class="position"> 
-                    <div><span>Type:</span>  ${list[markerpoint].type}
-                    </div>
-                    <div><span>Capacity:</span>${list[markerpoint].capacity}
-                    </div> 
-                    <div>
-                    <button >Delete</button>  
-                    <a href='/edit?id=${list[markerpoint]._id}' > edit</a>  
-                    
-                    </div>        
-                </div>`);
-                k.id = list[markerpoint]._id
-                k.on('dragend', function (event) {
-                console.log(event.target.id);
-                
-                })
-
- }        
-}
-})
-.catch((error) => {
-  console.error('Error:', error);
-});
-});
-
-
-
-// change fileter
-    function view(e) {
-        console.log(e)
-        const pos = category[e  * 1]
-        for (let l = (e * 1); l < category.length; l++) {
-
-            if (category[l + 1]) {
-                category[l] = category[l + 1]
-            }
-        }
-        category.length = category.length - 1
-        category = [pos, ...category]
-        waterstation()
-        document.querySelector('.dropdown-content').style.display = 'none'
-    }
-
-//   open filters  
-function init(){
-    document.querySelector('.dropdown-content').style.display='block'
-}
-
-
-
-
-function displayoff(){ 
-     let addstationscreen = document.querySelector('.parpopup')        
-        addstationscreen.style.display='none'
-    savedobj={}
+    <script src="min.js"></script>
     
-}
-
-
- 
-
-
-// turn change location off
-function updatestation(){
-    document.querySelector('.updatestation').style.display= 'none'
-}
-
-// saving a station
-function savestation(){  
-//   document.querySelector('.groupimg img').style.display='block'
-
-    savedobj.type =  document.querySelector('.position div:nth-child(1) input').value
-     savedobj.capacity =  document.querySelector('.position div:nth-child(2) input').value
- console.log(savedobj)
-    if( savedobj.type!=='' &&  savedobj.capacity !==""){
-
-        // showing progress image
-        document.querySelector('.groupimg img').style.display='block'
-    
-    
-    fetch('/add',{
-  method: 'POST', // or 'PUT'
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(savedobj),
-})
-.then(response => response.json())
-.then(data => {
-    if(data==='success'){
-        setTimeout(() => {
-         document.querySelector('.groupimg img').style.display='none'   
-         document.querySelector('.parpopup').style.display='none'
-         document.querySelector('.position div:nth-child(1) input').value=''
-    document.querySelector('.position div:nth-child(2) input').value=''
-        }, 1000);        
-    }
-  console.log('Success:', data);
-
- 
-})
-.catch((error) => {
-  console.error('Error:', error);
-});
-
-        document.querySelector('.position div:nth-child(2) input').style.border='2px solid gray'
-        document.querySelector('.position div:nth-child(1) input').style.border='2px solid gray'
-
-         
-
-
-
-
-
-         
-        list = [savedobj,...list]
-
-       if(savedobj.location){
-        let gIcon = L.icon({
-                iconUrl: `${savedobj.type}.png`, 
-                iconSize:     [20, 20], // size of the icon 
-          
-            });
-          
-              let k =   L.marker([savedobj.location.lat,savedobj.location.lng],{draggable:true,title:savedobj.type,icon:gIcon}).addTo(mymap);
-                 k.bindPopup( `<div class="position"> 
-        <div><span>Type:</span>  ${savedobj.type}
-        </div>
-        <div><span>Capacity:</span>${savedobj.capacity}
-        </div> 
-        <div>
-        <button >Delete</button>  
-        <a href='#' > edit</a>  
-         
-        </div>        
-    </div>`);
-} 
-                   
-    }else if(savedobj.type===''){
-        document.querySelector('.position div:nth-child(1) input').style.border='2px solid red'
-       document.querySelector('.position div:nth-child(2) input').style.border='2px solid gray'
-    } else if(savedobj.capacity===''){
-        document.querySelector('.position div:nth-child(2) input').style.border='2px solid red'
-        document.querySelector('.position div:nth-child(1) input').style.border='2px solid gray'
-         
-    }
-}
-
- 
-
-
-
-// initializing the map here
-        var mymap = L.map('mapid').setView([8.5491651393907, -11.643084429690779], 8);
-            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW1hZHViYXJpZSIsImEiOiJja2ptdzJqOGM2Z3hmMnlsZ2prbGw3cGlsIn0.97FzOEjHufiMQSI6j2B6-Q', {
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                 minZoom:8,
-                id: 'mapbox/streets-v11',
-                tileSize: 512,
-                zoomOffset: -1,
-                accessToken: 'your.mapbox.access.token'
-            }).addTo(mymap);
-            mymap.dragging.disable();
-            
-
-      
-
-
-function onMapClick(e) {
-    
-   document.querySelector('.parpopup').style.display='flex' 
-    savedobj.location={...e.latlng} 
-
-   
-     
-
-}
-
-mymap.on('click', onMapClick);
-
-
-
-
-    </script>
 </body>
+
 </html>

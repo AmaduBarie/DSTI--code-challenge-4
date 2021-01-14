@@ -5,16 +5,16 @@ var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
 const {station} = require('./schema');
 
-mongoose.connect('mongodb://localhost:27017/Chatmarket', { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose.connect('mongodb+srv://dsti_code:dsti_code@dsti.cabff.mongodb.net/stations?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true })
 
 .then((con) => {
-  console.log('connected')
+  console.log('connected to db')
 }).catch(err => console.log('error'))
 
 
 
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -40,10 +40,10 @@ app.post('/add',function (req, res) {
     const stations = new station(req.body)
     stations.save((err, info) => {
       console.log(info)
-        if (info) {
-          res.status(200).end(JSON.stringify(`success`))
+        if (info) { 
+          res.status(200).end(JSON.stringify(info))
         } else {
-          res.status(400).send(JSON.stringify(`success`))
+          res.status(400).send(JSON.stringify('err'))
         }
       })
 }).get('/init',function (req, res) {   
@@ -52,25 +52,29 @@ app.post('/add',function (req, res) {
       if(data){
         res.end(JSON.stringify(data))
       }
-    })}).get('/edit',function (req, res) {   
+    })
+  }).get('/edit',function (req, res) {   
       const queryObj = url.parse(req.url,true).query;
     station.find({_id:queryObj.id},(err,data)=>{
       if(data){
-        console.log(data)
         res.render('edit', {obj:data[0]});
       }
     })
 }).post('/saveedit',function (req, res) {  
-  res.setHeader('Content-Type','application/json') 
-    station.find({_id:req.body.id},(err,data)=>{
-      console.log(req.body)
-      console.log(data)
-      if(data[0]){
-        data[0].type = req.body.type
-        data[0].capacity = req.body.capacity
-        const stations = new station(data[0])
+  res.setHeader('Content-Type','application/json')  
+  station.findOne({_id:req.body.id},(err,data)=>{ 
+
+      if(data){
+        
+        if(req.body.from && req.body.from==='move'){  
+          data= {...data,type:data.type,capacity:data.capacity,location:req.body.location}
+        }else{
+          console.log("not move here")
+          data= {...data,type:req.body.type,capacity:req.body.capacity,location:data.location}
+          
+        }      
+        const stations = new station(data)
     stations.save((err, info) => {
-      console.log(err)
         if (info) {
           res.status(200).end(JSON.stringify(`success`))
         } else {
@@ -79,8 +83,18 @@ app.post('/add',function (req, res) {
       })         
       }
     })
-})
 
 
+}).delete('/deleter',function (req, res) {   
+  res.setHeader('Content-Type','application/json')   
+    station.findOneAndDelete({_id:req.body.id},(err,data)=>{ 
+      if(data){
+        res.status(200).end(JSON.stringify(`success`))
+      }else{
+        res.status(200).end(JSON.stringify(`err`))
+      }
+    })
+  })
 
-app.listen(port, () => console.log(`port ${port}!`));
+
+app.listen(port, () => console.log(`connected on port: ${port}!`));
