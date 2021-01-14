@@ -19,6 +19,7 @@ waterstation()
 document.addEventListener("DOMContentLoaded", () => {
     fetch('/init').then(response => response.json())
         .then(data => {
+            console.log(data)
             list = data;
             if (list.length) {
                 for (let markerpoint = 0; markerpoint < list.length; markerpoint++) {
@@ -53,7 +54,7 @@ function markerPositioner(val, pos) {
     k.on('dragend', function (event) {
         flip('.updatestation', 'flex')
         moveMarker.location = { ...event.target._latlng } 
-        moveMarker.id = event.target.id
+        moveMarker._id = event.target.id
     })
     list[pos * 1] = { ...val, marker: k }
     return
@@ -99,12 +100,20 @@ function dragPositionyes() {
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data)
             if (data !== 'err') {
                
                     flip('.updatestation div img', 'none')
                     flip('h3', 'block')
+                for (let lop = 0; lop < list.length; lop++) {
+                     if(list[lop]._id===data.p){                
+                         mymap.removeLayer(list[lop].marker)
+                          list[lop] = data._doc 
+                         markerPositioner(list[lop],lop)
+                         break;
+                     }                    
+                }
                 
-                list[moveMarker.pos] = data
                 setTimeout(() => {
                     flip('.updatestation', 'none')
                     flip('h3', 'none')
@@ -121,7 +130,7 @@ function dragPositionyes() {
 function dragPositionno() {
     flip('.updatestation', 'none')
     for (let d = 0; d < list.length; d++) {
-            if(list[d]._id===moveMarker.id){
+            if(list[d]._id===moveMarker._id){
                  mymap.removeLayer(list[d].marker);
                  markerPositioner(list[d], d) 
             }
