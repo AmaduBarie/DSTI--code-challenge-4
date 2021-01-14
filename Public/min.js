@@ -136,17 +136,19 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data === 'success') {
+                    if (data!== 'err') {
                         setTimeout(() => {
                            flip('.updatestation div img','none')
                             flip('h3','block') 
                         }, 1000);
-
+                       list[moveMarker.pos]=data
                         setTimeout(() => {
                            flip('.updatestation','none') 
                            flip('h3','none')
+                           moveMarker = {}
                         }, 2000);
                     }
+                   
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -191,7 +193,7 @@
                                 document.querySelector('.position div:nth-child(2) input').value = ''
 
                                 markerPositioner(data, list.length)
-                                list = [...list, data]
+                                list.push(data) 
                             }, 1000);
                             savedobj = {}
                         } 

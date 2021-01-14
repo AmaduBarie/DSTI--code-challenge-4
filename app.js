@@ -31,7 +31,7 @@ res.render('index.ejs')
 });
 
  
-// station.find({},(e,o)=> console.log(o))
+station.find({},(e,o)=> console.log(o))
 // station.deleteMany({},(e,o)=> console.log(o))
 
 
@@ -55,9 +55,9 @@ app.post('/add',function (req, res) {
     })
   }).get('/edit',function (req, res) {   
       const queryObj = url.parse(req.url,true).query;
-    station.find({_id:queryObj.id},(err,data)=>{
+    station.findOne({_id:queryObj.id},(err,data)=>{
       if(data){
-        res.render('edit', {obj:data[0]});
+        res.render('edit', {obj:data});
       }
     })
 }).post('/saveedit',function (req, res) {  
@@ -69,14 +69,14 @@ app.post('/add',function (req, res) {
         if(req.body.from && req.body.from==='move'){  
           data= {...data,type:data.type,capacity:data.capacity,location:req.body.location}
         }else{
-          console.log("not move here")
           data= {...data,type:req.body.type,capacity:req.body.capacity,location:data.location}
           
         }      
         const stations = new station(data)
     stations.save((err, info) => {
         if (info) {
-          res.status(200).end(JSON.stringify(`success`))
+          const r = req.body.from==='move'? info :`success`
+          res.status(200).end(JSON.stringify(r))
         } else {
           res.status(400).send(JSON.stringify(`err`))
         }
