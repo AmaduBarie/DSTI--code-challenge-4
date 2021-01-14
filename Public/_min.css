@@ -15,7 +15,54 @@
     top: 60vh
 }
 
+.latlng {
+    background-color: rgb(78 46 46);
+    width: 12em;
+    max-height: 5em;
+    border-radius: .2em;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding: 3px;
+    position: absolute;
+}
 
+.latlng .lat {
+    color: rgb(247 138 0);
+    max-width: 5em;
+    max-height: 5em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    height: 1em;
+    font-weight: bold;
+    color: rgb(247 138 0);
+}.latlng .lng {   
+    max-width: 5em;
+    max-height: 5em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    height: 1em;
+    font-weight: bold;
+    color: rgb(247 138 0);
+}
+ .latlng .lat p {   
+    font-weight: lighter;
+    color: white;
+}.latlng .lng p {   
+    font-weight: lighter;
+    color: white;
+}
+ 
 .dropdown {
     position: relative;
     display: flex;

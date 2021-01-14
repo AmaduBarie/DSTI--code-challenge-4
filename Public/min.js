@@ -220,6 +220,14 @@ function onMapClick(e) {
     savedobj.location = { ...e.latlng }
 }
 mymap.on('click', onMapClick);
+mymap.on('mousemove', (e)=>{
+    console.log(e.originalEvent.screenX) 
+   let tracker = document.querySelector('.latlng').style
+   tracker.top=(e.originalEvent.screenY>700)?(e.originalEvent.screenY-80):(e.originalEvent.screenY-30)+'px'
+   tracker.left=(e.originalEvent.screenX<50)?(e.originalEvent.screenX+80):(e.originalEvent.screenX>660)?(e.originalEvent.screenX-80):(e.originalEvent.screenX-20)+'px'
+   document.querySelector('.latlng .lat p').innerHTML = e.latlng.lat
+   document.querySelector('.latlng .lng p').innerHTML = e.latlng.lng
+});
 
 function flip(e, v) {
     if (v === 'none' || v == 'flex' || v === 'block') {
