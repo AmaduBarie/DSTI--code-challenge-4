@@ -25,7 +25,7 @@ function savestation() {
             .then(data => {
                 if (data === 'success') {
                     setTimeout(() => {
-                        window.location.href = "/";
+                        window.location.assign('/');
                     }, 1000);
                 }
             })

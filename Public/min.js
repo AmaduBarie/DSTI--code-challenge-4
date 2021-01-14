@@ -3,7 +3,7 @@ var category = ['All', 'Pump Station', 'Dam', 'Community Pump', 'Well']
 var editedobj = {}
 var savedobj = { location: '' }
 var list = []
-var moveMarker = { location: '', from: 'move' }
+var moveMarker = { location: '' }
 // fileter function 
 function waterstation() {
     let arr = `<span  class="dropbtn"> <img src="${category[0]}.png" />${category[0]}</span><div class="dropdown-content">`
@@ -49,10 +49,10 @@ function markerPositioner(val, pos) {
                     </div>        
                 </div>`);
     k.id = val._id
+
     k.on('dragend', function (event) {
         flip('.updatestation', 'flex')
-        moveMarker.location = { ...event.target._latlng }
-        moveMarker.pos = event.target.pos
+        moveMarker.location = { ...event.target._latlng } 
         moveMarker.id = event.target.id
     })
     list[pos * 1] = { ...val, marker: k }
@@ -120,8 +120,13 @@ function dragPositionyes() {
 // turn change location off
 function dragPositionno() {
     flip('.updatestation', 'none')
-    mymap.removeLayer(list[moveMarker.pos].marker);
-    markerPositioner(list[moveMarker.pos], moveMarker.pos)
+    for (let d = 0; d < list.length; d++) {
+            if(list[d]._id===moveMarker.id){
+                 mymap.removeLayer(list[d].marker);
+                 markerPositioner(list[d], d) 
+            }
+    }
+  
 }
 
 // saving a station

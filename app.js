@@ -22,13 +22,12 @@ app.use(express.static('./Public'));
 app.get('/', function (req, res) {
   res.render('index.ejs')
 });
-station.find({}, (e, o) => console.log(o))
+station.find({}, (e, o) => console.log(o.length))
 // station.deleteMany({},(e,o)=> console.log(o))
 app.post('/add', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   const stations = new station(req.body)
   stations.save((err, info) => {
-    console.log(info)
     if (info) {
       res.status(200).end(JSON.stringify(info))
     } else {
@@ -51,27 +50,57 @@ app.post('/add', function (req, res) {
   })
 }).post('/saveedit', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
-  station.findOne({ _id: req.body.id }, (err, data) => {
-    if (data) {
-      if (req.body.from && req.body.from === 'move') {
-        data = { ...data, type: data.type, capacity: data.capacity, location: req.body.location }
-      } else {
-        data = { ...data, type: req.body.type, capacity: req.body.capacity, location: data.location }
-      }
-      const stations = new station(data)
-      stations.save((err, info) => {
-        if (info) {
-          const r = req.body.from === 'move' ? info : `success`
-          res.status(200).end(JSON.stringify(r))
-        } else {
-          res.status(400).send(JSON.stringify(`err`))
-        }
-      })
-    }
+  console.log(req.body)
+   
+  station.findOneAndDelete({ _id: req.body._id }, (err, data) => {
+    
+        if (req.body.location) {
+            data = {type: data.type, capacity: data.capacity, location: req.body.location }
+          } else {
+            data = {type: req.body.type, capacity: req.body.capacity, location: data.location }
+          }
+          if(data){
+          const stations = new station(data)    
+                  stations.save((err, info) => {
+                  if (info) {
+                    const r = req.body.location ? info : `success`
+                    res.status(200).end(JSON.stringify(r))
+                  } else {
+                    console.log(err)
+                    res.status(400).send(JSON.stringify(`err`))
+                  }
+                })            
+          }
+       
+    })
+   
   })
-}).delete('/deleter', function (req, res) {
+    // station.updateOne({_id:req.body.id},{...req.body},(err, info) => {
+    //         if (info) {
+    //           console.log("updated")
+    //           console.log(info)
+    //           const r = req.body.from === 'move' ? info : `success`
+    //           res.status(200).end(JSON.stringify(r))
+    //         } else {
+    //           console.log(err)
+    //           res.status(400).send(JSON.stringify(`err`))
+    //         }
+
+    //     })
+  
+  // station.findOne({ _id: req.body.id }, (err, data) => {
+  //   if (data) {
+       
+  //     if (req.body.from && req.body.from === 'move') {
+  //       data = { ...data,_id:data._id, type: data.type, capacity: data.capacity, location: req.body.location }
+  //     } else {
+  //       data = { ...data,_id:data._id, type: req.body.type, capacity: req.body.capacity, location: data.location }
+  //     }
+  
+.delete('/deleter', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   station.findOneAndDelete({ _id: req.body.id }, (err, data) => {
+    console.log(data)
     if (data) {
       res.status(200).end(JSON.stringify(data._id))
     } else {
