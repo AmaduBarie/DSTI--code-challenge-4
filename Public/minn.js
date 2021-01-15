@@ -15,7 +15,7 @@ function savestation() {
     if (empty) {
         document.querySelector('img').style.display = 'block'
         fetch('/saveedit', {
-            method: 'POST',
+            method: 'put',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -23,7 +23,7 @@ function savestation() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data === 'success') { 
+                if (data !== 'err') { 
                         window.location.assign('/');                   
                 }
             })

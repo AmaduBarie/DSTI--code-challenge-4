@@ -23,19 +23,20 @@ app.get('/', function (req, res) {
   res.render('index.ejs')
 });
 
- 
+  
 
 app.post('/add', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   const stations = new station(req.body)
   stations.save((err, info) => {
     if (info) {
-      res.status(200).end(JSON.stringify(info))
+     return res.status(200).end(JSON.stringify(info))
     } else {
-      res.status(400).send(JSON.stringify('err'))
+     return res.status(400).send(JSON.stringify('err'))
     }
   })
-}).get('/init', function (req, res) {
+  
+}).get('/read', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   station.find({}, (err, data) => {
     if (data) {
@@ -47,25 +48,23 @@ app.post('/add', function (req, res) {
   station.findOne({ _id: queryObj.id }, (err, data) => {
     if (data) {
       res.render('edit', { obj: data });
+    }else{
+      res.end("invalid input")
     }
   })
-}).post('/saveedit', function (req, res) { 
+  
+}).put('/saveedit', function (req, res) { 
   res.setHeader('Content-Type', 'application/json')
   station.findOneAndDelete({ _id: req.body._id }, (err, data) => { 
-    if (data) {
-    if (req.body.location) {
-      data = { type: data.type, capacity: data.capacity, location: req.body.location }
-    } else {
-      data = { type: req.body.type, capacity: req.body.capacity, location: data.location }
-    }
-    
+    if (data) {     
+      data = { type: req.body.type||data.type, capacity: req.body.capacity||data.capacity, location: req.body.location||data.location }
       const stations = new station(data)
       stations.save((err, info) => {
         if (info) {
-          const r = req.body.location ? {...info,p:req.body._id} : `success`
+          const r = req.body.location ? {...info,p:req.body._id} : info
           res.status(200).end(JSON.stringify(r))
         } else {
-          res.status(400).send(JSON.stringify(`err`))
+          res.status(404).send(JSON.stringify(`err`))
         }
       })
     }

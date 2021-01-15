@@ -17,7 +17,7 @@ waterstation()
 
 // the first time the document is loaded
 document.addEventListener("DOMContentLoaded", () => {
-    fetch('/init').then(response => response.json())
+    fetch('/read').then(response => response.json())
         .then(data => {
             console.log(data)
             list = data;
@@ -92,7 +92,7 @@ function displayoff() {
 function dragPositionyes() {
     flip('.updatestation div img', 'block')    
     fetch('/saveedit', {
-        method: 'POST',
+        method: 'put',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -220,17 +220,13 @@ function onMapClick(e) {
     savedobj.location = { ...e.latlng }
 }
 mymap.on('click', onMapClick);
-mymap.on('mousemove', (e)=>{
-    console.log(e.originalEvent.screenX) 
-   let tracker = document.querySelector('.latlng').style
-    tracker.display='flex'
+mymap.on('mousemove', (e)=>{ 
+   let tracker = document.querySelector('.latlng').style 
    tracker.top=(e.originalEvent.screenY-30)+'px'
    tracker.left=(e.originalEvent.screenX-20)+'px'
    document.querySelector('.latlng .lat p').innerHTML = e.latlng.lat
    document.querySelector('.latlng .lng p').innerHTML = e.latlng.lng
-   setTimeout(() => {
-      tracker.display='none'  
-   }, 2000);
+ 
 });
 
 function flip(e, v) {
