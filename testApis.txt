@@ -1,0 +1,11 @@
+
+
+POST http://localhost:8000/add
+content-type: application/json
+
+{
+    
+     "type": "Well",
+     "location":"not me",
+     "capacity":""
+}

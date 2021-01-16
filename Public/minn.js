@@ -1,10 +1,11 @@
 
 function savestation() {
+    var category = ['All', 'Pump Station', 'Dam', 'Community Pump', 'Well']
     let empty = true
     let editedobj = {}
     let val = document.querySelectorAll('.position div input')
     for (let dx = 0; dx < val.length; dx++) {
-        if (val[dx].value == '') {
+        if (val[dx].value == '' || (val[dx].name==='type' && category.indexOf(val[dx].value)===-1) || (val[dx].name==='capacity' && val[dx].value<1)) {
             val[dx].style.borderColor = 'red'
             empty = false
         } else {
@@ -23,7 +24,7 @@ function savestation() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data !== 'err') { 
+                if (data.type) { 
                         window.location.assign('/');                   
                 }
             })

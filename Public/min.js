@@ -18,9 +18,9 @@ waterstation()
 // the first time the document is loaded
 document.addEventListener("DOMContentLoaded", () => {
     fetch('/read').then(response => response.json())
-        .then(data => {
-            console.log(data)
+        .then(data => { 
             list = data;
+            console.log(list)
             if (list.length) {
                 for (let markerpoint = 0; markerpoint < list.length; markerpoint++) {
                     markerPositioner(list[markerpoint], markerpoint)
@@ -49,8 +49,7 @@ function markerPositioner(val, pos) {
                     <a href='/edit?id=${val._id}' > edit</a>                      
                     </div>        
                 </div>`);
-    k.id = val._id
-
+    k.id = val._id 
     k.on('dragend', function (event) {
         flip('.updatestation', 'flex')
         moveMarker.location = { ...event.target._latlng } 
@@ -100,15 +99,14 @@ function dragPositionyes() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
-            if (data !== 'err') {
-               
+            if (data.type) {
+               console.log(data)
                     flip('.updatestation div img', 'none')
                     flip('h3', 'block')
                 for (let lop = 0; lop < list.length; lop++) {
-                     if(list[lop]._id===data.p){                
+                     if(list[lop]._id===data._id){                
                          mymap.removeLayer(list[lop].marker)
-                          list[lop] = data._doc 
+                          list[lop] = data
                          markerPositioner(list[lop],lop)
                          break;
                      }                    
@@ -140,10 +138,10 @@ function dragPositionno() {
 
 // saving a station
 function savestation() {
+    
     savedobj.type = document.querySelector('.position div:nth-child(1) input').value
     savedobj.capacity = document.querySelector('.position div:nth-child(2) input').value
-    if(category.indexOf(savedobj.type)!==-1 && savedobj.type !=='All'){
-    if (savedobj.type !== '' && savedobj.capacity !== "") {
+    if (savedobj.type !== '' && savedobj.capacity !== "" && savedobj.capacity > 0 && category.indexOf(savedobj.type)!==-1 && savedobj.type!=='All') {
         // showing progress image
         flip('.groupimg img','block')
         fetch('/add', {
@@ -155,7 +153,7 @@ function savestation() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data !== 'err') {
+                if (data.type) {
                     
                         flip('.groupimg img', 'none')
                         flip('.parpopup', 'none')
@@ -172,14 +170,13 @@ function savestation() {
             });
         flip('.position div:nth-child(2) input', '2px solid gray')
         flip('.position div:nth-child(1) input', '2px solid gray')
-    } else if (savedobj.type === '') {
+    } else if (savedobj.type === '' || category.indexOf(savedobj.type)===-1) {
         flip('.position div:nth-child(1) input', '2px solid red')
         flip('.position div:nth-child(2) input', '2px solid gray')
-    } else if (savedobj.capacity === '') {
+    } else if (savedobj.capacity === '' || savedobj.capacity < 1) {
         flip('.position div:nth-child(2) input', '2px solid red')
         flip('.position div:nth-child(1) input', '2px solid gray')
     }
-}
 }
 function deleter(e) {
     flip('.deleter img', 'block')
@@ -188,16 +185,15 @@ function deleter(e) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: e }),
+        body: JSON.stringify({ _id: e }),
     })
         .then(response => response.json())
         .then(data => {
             if (data !== 'err') {
                     list = list.filter(v => {
-                        v._id === data && mymap.removeLayer(v.marker);
-                        return v._id !== data
-                    })
-                
+                        v._id === data._id && mymap.removeLayer(v.marker);
+                        return v._id !== data._id
+                    })                
             }
         })
         .catch((error) => {
