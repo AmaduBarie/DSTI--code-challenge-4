@@ -54,7 +54,7 @@ app.get('/', function (req, res) {
 
 app.post('/add', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
-  req.body._id =req.body._id|| ids 
+ 
   if(req.body.type){
     const type = req.body.type.split(" ")    
     if(type.length>1){
@@ -66,7 +66,7 @@ app.post('/add', function (req, res) {
 
   count.findOne({_id:1},(e,d)=>{
     if(d){
-      req.body._id = d.count+1
+      req.body._id =req.body._id|| d.count+1
     const stations = new station(req.body)
   
   stations.save((err, info) => {  
