@@ -9,16 +9,16 @@ let ids = 1
 
 
 // connect to my cloud server
-// mongoose.connect('mongodb+srv://dsti_code:dsti_code@dsti.cabff.mongodb.net/stations?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true })
-// .then((con) => {
-//     console.log('connected to db')
-//   }).catch(err => console.log('error'))
+mongoose.connect('mongodb+srv://dsti_code:dsti_code@dsti.cabff.mongodb.net/stations?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true })
+.then((con) => {
+    console.log('connected to db')
+  }).catch(err => console.log('error'))
 
 
 // for local connection
-mongoose.connect('mongodb://localhost:27017/Chatmarket', { useUnifiedTopology: true, useNewUrlParser: true }).then((con) => {
-  console.log('connected')
-}).catch(err => console.log('error'))
+// mongoose.connect('mongodb://localhost:27017/Chatmarket', { useUnifiedTopology: true, useNewUrlParser: true }).then((con) => {
+//   console.log('connected')
+// }).catch(err => console.log('error'))
 
 count.findOne({_id:1},(e,d)=>{
   if(d){
@@ -71,10 +71,7 @@ app.post('/add', function (req, res) {
   
   stations.save((err, info) => {  
    count.updateOne({_id:1},{count:d.count+1},(e,r)=>console.log(e))
-    if (info) {
-       
-      
-      
+    if (info) {      
      return res.status(200).end(JSON.stringify(info))
     } else {
      return res.status(400).send(JSON.stringify(err.message))
