@@ -27,7 +27,7 @@ mongoose.connect('mongodb+srv://dsti_code:dsti_code@dsti.cabff.mongodb.net/stati
 
 // reading ids count for server restart
 fs.readFile("id.txt", function(err, buf) {   
-   ids = Number.parseInt(buf); 
+   ids =  buf.toString() * 1
  });
  
 
