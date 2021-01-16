@@ -50,22 +50,14 @@ function markerPositioner(val, pos) {
                     </div>        
                 </div>`);
     k.id = val._id 
-    k.click = false
     k.on('mouseover', function (event) {
        event.target.openPopup()
-       event.target.click= false
+      
     })
 
-    k.on('click', function (event) {
-        event.target.click= true
-    })
+  
     
-    k.on('mouseout', function (event) {
-        if(!event.target.click){
-            mymap.closePopup()
-        }
-        
-     })
+   
     k.on('dragend', function (event) {
         flip('.updatestation', 'flex')
         moveMarker.location = { ...event.target._latlng } 
