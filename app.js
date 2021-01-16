@@ -3,32 +3,36 @@ var path = require('path');
 const url = require('url');
 var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
-const { station } = require('./schema');
-var fs = require("fs");
+const { station,count } = require('./schema');
+ 
 let ids = 1
 
 
 // connect to my cloud server
-mongoose.connect('mongodb+srv://dsti_code:dsti_code@dsti.cabff.mongodb.net/stations?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true })
-.then((con) => {
-    console.log('connected to db')
-  }).catch(err => console.log('error'))
+// mongoose.connect('mongodb+srv://dsti_code:dsti_code@dsti.cabff.mongodb.net/stations?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true })
+// .then((con) => {
+//     console.log('connected to db')
+//   }).catch(err => console.log('error'))
 
 
 // for local connection
-// mongoose.connect('mongodb://localhost:27017/Chatmarket', { useUnifiedTopology: true, useNewUrlParser: true }).then((con) => {
-//   console.log('connected')
-// }).catch(err => console.log('error'))
+mongoose.connect('mongodb://localhost:27017/Chatmarket', { useUnifiedTopology: true, useNewUrlParser: true }).then((con) => {
+  console.log('connected')
+}).catch(err => console.log('error'))
 
-
+count.findOne({_id:1},(e,d)=>{
+  if(d){
+ console.log(d.count)
+  }else{
+    const c = new count({_id:1,count:1})  
+    c.save()
+  }  
+})
  
 
 
 
-// reading ids count for server restart
-fs.readFile("id.txt", function(err, buf) {   
-   ids =  buf.toString() * 1
- });
+ 
  
 
 const app = express();
@@ -60,19 +64,25 @@ app.post('/add', function (req, res) {
     } 
   }
 
-  const stations = new station(req.body)
+  count.findOne({_id:1},(e,d)=>{
+    if(d){
+      req.body._id = d.count+1
+    const stations = new station(req.body)
+  
   stations.save((err, info) => {  
+   count.updateOne({_id:1},{count:d.count+1},(e,r)=>console.log(e))
     if (info) {
-      ids++
-      fs.writeFileSync("id.txt", ids , (err) => {
-        if (err) console.log(err);  
-      });
+       
+      
       
      return res.status(200).end(JSON.stringify(info))
     } else {
      return res.status(400).send(JSON.stringify(err.message))
     }
   })
+    }  
+  })
+  
   
 }).get('/edit', function (req, res) {
   const queryObj = url.parse(req.url, true).query;

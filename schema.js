@@ -15,7 +15,10 @@ const stations =new mongoose.Schema({
 });
 
 
-
+const counts =new mongoose.Schema({  
+  _id: { type:Number, required: false,default:1 } ,
+  count: { type:Number, required: true,default:1 } 
+});
 
 
 
@@ -23,5 +26,5 @@ const stations =new mongoose.Schema({
 
 
 const station = mongoose.model('stations', stations);
-
-module.exports = {station}
+const count = mongoose.model('counts', counts);
+module.exports = {station,count}
