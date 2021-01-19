@@ -11,6 +11,14 @@ let ids = 1
 // connect to my cloud server
 mongoose.connect('mongodb+srv://dsti_code:dsti_code@dsti.cabff.mongodb.net/stations?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true })
 .then((con) => {
+  count.findOne({_id:1},(e,d)=>{
+    if(d){
+   console.log(d.count)
+    }else{
+      const c = new count({_id:1,count:1})  
+      c.save()
+    }  
+  })
     console.log('connected to db')
   }).catch(err => console.log('error'))
 
@@ -20,14 +28,7 @@ mongoose.connect('mongodb+srv://dsti_code:dsti_code@dsti.cabff.mongodb.net/stati
 //   console.log('connected')
 // }).catch(err => console.log('error'))
 
-count.findOne({_id:1},(e,d)=>{
-  if(d){
- console.log(d.count)
-  }else{
-    const c = new count({_id:1,count:1})  
-    c.save()
-  }  
-})
+
  
 
 
