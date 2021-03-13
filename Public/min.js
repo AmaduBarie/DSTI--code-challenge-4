@@ -1,31 +1,30 @@
 
-var category = ['All', 'Pump Station', 'Dam', 'Community Pump', 'Well']
+var categories = ['All', 'Pump Station', 'Dam', 'Community Pump', 'Well']
 var editedobj = {}
 var savedobj = { location: '' }
 var list = []
 var moveMarker = { location: '' }
 // fileter function 
-function waterstation() {
-    let arr = `<span  class="dropbtn"> <img src="${category[0]}.png" />${category[0]}</span><div class="dropdown-content">`
-    arr += category.map((e, o) => o !== 0 ? (`<span key='${o}' onclick="view(${o})" class="dropbtn"><img src="${e}.png" alt=""> ${e}</span>`) : '')
+function waterstation(){
+    let arr = `<span  class="dropbtn"> <img src="${categories[0]}.png" />${categories[0]}</span><div class="dropdown-content">`
+    arr += categories.map((e, o) => o !== 0 ? (`<span key='${o}' onclick="view(${o})" class="dropbtn"><img src="${e}.png" alt=""> ${e}</span>`) : '')
     arr += ` </div>`
     arr = arr.replaceAll(',', '')
     document.querySelector('.dropdown').innerHTML = arr
 }
-waterstation()
 
 
 // the first time the document is loaded
 document.addEventListener("DOMContentLoaded", () => {
     fetch('/read').then(response => response.json())
         .then(data => { 
-            list = data;
-            console.log(list)
+            list = data; 
             if (list.length) {
-                for (let markerpoint = 0; markerpoint < list.length; markerpoint++) {
-                    markerPositioner(list[markerpoint], markerpoint)
-                }
+                list.map((e,index)=>{
+                    markerPositioner(e, index)
+                }) 
             }
+            waterstation()
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -35,9 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function markerPositioner(val, pos) {
     let gIcon = L.icon({
         iconUrl: `${val.type}.png`,
-        iconSize: [17, 17], // size of the icon 
+        iconSize: [17, 17], 
     });
-    let k = L.marker([val.location.lat, val.location.lng], { draggable: true, title: savedobj.type, icon: gIcon }).addTo(mymap);
+    let k = L.marker([val.location.lat, val.location.lng], { draggable: true, title: `${savedobj.type}`, icon: gIcon }).addTo(mymap);
     k.bindPopup(`<div class="position"> 
                     <div><span>Type:</span>  ${val.type}
                     </div>
@@ -51,8 +50,7 @@ function markerPositioner(val, pos) {
                 </div>`);
     k.id = val._id 
     k.on('mouseover', function (event) {
-       event.target.openPopup()
-      
+       event.target.openPopup()      
     })
 
   
@@ -69,14 +67,14 @@ function markerPositioner(val, pos) {
 
 // change fileter
 function view(e) {
-    const pos = category[e * 1]
-    for (let l = (e * 1); l < category.length; l++) {
-        if (category[l + 1]) {
-            category[l] = category[l + 1]
+    const pos = categories[e * 1]
+    for (let l = (e * 1); l < categories.length; l++) {
+        if (categories[l + 1]) {
+            categories[l] = categories[l + 1]
         }
     }
-    category.length = category.length - 1
-    category = [pos,...category]
+    categories.length = categories.length - 1
+    categories = [pos,...categories]
     waterstation()
     mymap.eachLayer(l=>l.id &&  mymap.removeLayer(l))
     if (list.length) {
@@ -108,7 +106,6 @@ function dragPositionyes() {
         .then(response => response.json())
         .then(data => {
             if (data.type) {
-               console.log(data)
                     flip('.updatestation div img', 'none')
                     flip('h3', 'block')
                 for (let lop = 0; lop < list.length; lop++) {
@@ -149,7 +146,7 @@ function savestation() {
     
     savedobj.type = document.querySelector('.position div:nth-child(1) input').value
     savedobj.capacity = document.querySelector('.position div:nth-child(2) input').value
-    if (savedobj.type !== '' && savedobj.capacity !== "" && savedobj.capacity > 0 && category.indexOf(savedobj.type)!==-1 && savedobj.type!=='All') {
+    if (savedobj.type !== '' && savedobj.capacity !== "" && savedobj.capacity > 0 && categories.indexOf(savedobj.type)!==-1 && savedobj.type!=='All') {
         // showing progress image
         flip('.groupimg img','block')
         fetch('/add', {
@@ -178,7 +175,7 @@ function savestation() {
             });
         flip('.position div:nth-child(2) input', '2px solid gray')
         flip('.position div:nth-child(1) input', '2px solid gray')
-    } else if (savedobj.type === '' || category.indexOf(savedobj.type)===-1) {
+    } else if (savedobj.type === '' || categories.indexOf(savedobj.type)===-1) {
         flip('.position div:nth-child(1) input', '2px solid red')
         flip('.position div:nth-child(2) input', '2px solid gray')
     } else if (savedobj.capacity === '' || savedobj.capacity < 1) {
@@ -219,9 +216,32 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: 'your.mapbox.access.token'
 }).addTo(mymap);
 
+
+var geocodeService = L.esri.Geocoding.geocodeService();
+
+function incorrectLocation(){
+     flip('.updatestations', 'none') 
+     flip('.updatestations h3', 'none')
+}
+
 function onMapClick(e) {
-    flip('.parpopup', 'flex')
+    flip('.updatestations', 'flex')
+    flip('.updatestations img', 'block') 
+ 
     savedobj.location = { ...e.latlng }
+
+    geocodeService.reverse().latlng(e.latlng).run(function (error, result) {
+        if (error) return;
+         if(result.address.CountryCode==='SLE'){
+                flip('.updatestations', 'none')
+                flip('.parpopup', 'flex')
+         }else{ 
+             flip('.updatestations h3', 'block')
+              flip('.updatestations img', 'none')
+              flip('.updatestations button', 'block')
+         } 
+
+            });
 }
 mymap.on('click', onMapClick);
 mymap.on('mousemove', (e)=>{ 
