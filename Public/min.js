@@ -212,7 +212,7 @@ function deleter(e) {
 var mymap = L.map('mapid').setView([8.5491651393907, -11.643084429690779], 8);
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW1hZHViYXJpZSIsImEiOiJja2ptdzJqOGM2Z3hmMnlsZ2prbGw3cGlsIn0.97FzOEjHufiMQSI6j2B6-Q', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    minZoom: 8,
+    minZoom:7,
     id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1,
