@@ -12,17 +12,21 @@
     position: absolute;
     top: 60vh
 }
+ 
+
+
 
 .latlng {
     background-color: rgb(78 46 46);
     width: 12em;
     max-height: 5em;
     border-radius: .2em;
-    display: flex;
+    display: block;
     flex-direction: column;
     flex-wrap: nowrap;
     padding: 3px;
     position: absolute;
+    z-index: 999;
 }
 
 .latlng .lat {
@@ -67,6 +71,7 @@
     flex-direction: column;
     flex-wrap: nowrap;
     max-width: 10em;
+    top: 2.5em;
     justify-content: center;
     align-items: flex-start;
 }
@@ -302,8 +307,8 @@ h3 {
     display: none;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: 999;
     left: 0px;
     top: 0px;
@@ -346,7 +351,7 @@ h3 {
     flex-direction: column;
     color: whitesmoke;
     border-radius: .6em;
-    width: 40%;
+    width: 50%;
     height: 50%;
     left: 0px;
     top: 0px;
